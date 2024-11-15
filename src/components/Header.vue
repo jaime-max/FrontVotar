@@ -1,0 +1,81 @@
+<script setup lang="ts">
+const iconDimension = {
+  width:30,
+  height:30,
+}
+</script>
+
+<template>
+  <header class="app-header">
+    <nav>
+      <ul class="nav-left">
+        <li><router-link to="/" custom v-slot="{ navigate }">
+          <a href="javascript:void(0);" @click="navigate" role="link">
+            <div>
+              Inicio
+            </div></a>
+        </router-link></li>
+        <li><router-link to="/registrar/" custom v-slot="{ navigate }">
+          <a href="javascript:void(0);" @click="navigate" role="link">
+            <div>
+              Registrar Usuario
+            </div></a>
+        </router-link></li>
+        <li><router-link to="/listarUser/" custom v-slot="{ navigate }">
+          <a href="javascript:void(0);" @click="navigate" role="link">
+            <div>
+              Lista de Usuarios
+            </div></a>
+        </router-link></li>
+      </ul>
+      <ul class="nav-right">
+        <li><router-link to="/" custom v-slot="{ navigate }">
+          <a href="javascript:void(0);" @click="navigate" role="link">
+            <div>
+              Iniciar Sesion
+            </div></a>
+        </router-link></li>
+        <li><a href="/"></a>
+          <div>
+            Cerrar Sesion
+          </div></li>
+      </ul>
+    </nav>
+  </header>
+</template>
+
+<style scoped>
+.app-header {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-left {
+  display: flex;
+  gap: 80px;
+}
+
+.nav-right {
+  display: flex;
+  gap: 80px;
+}
+
+nav ul li a {
+  color: white;
+  text-decoration: none;
+}
+</style>
