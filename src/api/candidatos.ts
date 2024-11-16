@@ -1,5 +1,5 @@
 import apiUser from '@/api/api-user'
-import type { registrarCandidato } from '@/views/candidato/interfaces/registrarCandi'
+import type { registrarCandidato, listarCandidato } from '@/views/candidato/interfaces/registrarCandi'
 
 
 export default {
@@ -29,5 +29,9 @@ export default {
     });
 
     return response.data;
+  },
+  async listarCandidatos():Promise<listarCandidato[]>{
+    const response = await apiUser.get<listarCandidato[]>('/api/candidatos');
+    return response.data
   },
 };
