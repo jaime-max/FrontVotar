@@ -1,7 +1,7 @@
 <script setup lang="ts">
-  import LogoApple from '@/views/usuario/login/components/Loginviews/LogoApple.vue'
-  import LogoGoogle from '@/views/usuario/login/components/Loginviews/LogoGoogle.vue'
-  import LogoFacebook from '@/views/usuario/login/components/Loginviews/LogoFacebook.vue'
+  import LogoApple from '@/views/usuario/login/components/LoginLogos/LogoApple.vue'
+  import LogoGoogle from '@/views/usuario/login/components/LoginLogos/LogoGoogle.vue'
+  import LogoFacebook from '@/views/usuario/login/components/LoginLogos/LogoFacebook.vue'
   import type {LoginRequest, LoginResponse} from '@/views/usuario/login/interfaces/loginRequest'
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
