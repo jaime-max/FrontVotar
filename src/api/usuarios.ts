@@ -1,5 +1,5 @@
 import type { updateUser,listarUser ,RegisterUserRequest, } from '@/views/usuario/registrarse/interfaces/registerUser';
-import type {LoginRequest} from '@/views/usuario/login/interfaces/loginRequest'
+import type {LoginRequest, LoginResponse} from '@/views/usuario/login/interfaces/loginRequest'
 import apiUser from '@/api/api-user'
 
 export  default {
@@ -7,8 +7,8 @@ export  default {
     const response = await apiUser.post<string>('/api/usuarios', DataUser)
     return response.data
   },
-  async login(credentials: LoginRequest){
-    const response = await apiUser.post<string>('/api/usuarios/login',credentials)
+  async login(credentials: LoginRequest):Promise<LoginResponse>{
+    const response = await apiUser.post<LoginResponse>('/api/usuarios/login',credentials)
     return response.data
   },
   async listarUsuario():Promise<listarUser[]>{

@@ -1,7 +1,19 @@
 <script setup lang="ts">
+import { useRouter } from 'vue-router'; // Importa el router para redirigir después de cerrar sesión
+
+const router = useRouter(); // Asegúrate de usar useRouter en setup
+
+function logout() {
+  // Eliminar el token del localStorage
+  localStorage.removeItem('token');
+
+  // Redirigir a la página de login
+  router.push({ name: 'login' }); // Asegúrate de que el nombre de la ruta sea correcto
+}
+
 const iconDimension = {
-  width:30,
-  height:30,
+  width: 30,
+  height: 30,
 }
 </script>
 
@@ -11,38 +23,34 @@ const iconDimension = {
       <ul class="nav-left">
         <li><router-link to="/" custom v-slot="{ navigate }">
           <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>
-              Inicio
-            </div></a>
+            <div>Inicio</div>
+          </a>
         </router-link></li>
         <li><router-link to="/registrar/" custom v-slot="{ navigate }">
           <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>
-              Registrar Usuario
-            </div></a>
+            <div>Registrar Usuario</div>
+          </a>
         </router-link></li>
         <li><router-link to="/listarUser/" custom v-slot="{ navigate }">
           <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>
-              Lista de Usuarios
-            </div></a>
+            <div>Lista de Usuarios</div>
+          </a>
         </router-link></li>
       </ul>
       <ul class="nav-right">
         <li><router-link to="/" custom v-slot="{ navigate }">
           <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>
-              Iniciar Sesion
-            </div></a>
+            <div>Iniciar Sesion</div>
+          </a>
         </router-link></li>
-        <li><a href="/"></a>
-          <div>
-            Cerrar Sesion
-          </div></li>
+        <li><a href="javascript:void(0);" @click="logout">
+          <div>Cerrar Sesion</div>
+        </a></li>
       </ul>
     </nav>
   </header>
 </template>
+
 
 <style scoped>
 .app-header {

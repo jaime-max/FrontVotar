@@ -2,7 +2,7 @@
   import LogoApple from '@/views/usuario/login/components/Loginviews/LogoApple.vue'
   import LogoGoogle from '@/views/usuario/login/components/Loginviews/LogoGoogle.vue'
   import LogoFacebook from '@/views/usuario/login/components/Loginviews/LogoFacebook.vue'
-  import type {LoginRequest} from '@/views/usuario/login/interfaces/loginRequest'
+  import type {LoginRequest, LoginResponse} from '@/views/usuario/login/interfaces/loginRequest'
   import { useRouter } from 'vue-router'
   import { ref } from 'vue'
   import usuarios from '@/api/usuarios'
@@ -60,28 +60,50 @@
     return true;
   }
 
-  //funcion para login
-  async  function login(){
-    if(!validateForm()){
+  async function login() {
+    if (!validateForm()) {
       return;
     }
     try {
-      const data = await usuarios.login(credentiales.value)
-      console.log(data)
-      mensajeExito.value = 'Login successfully';
-      mensajevisible.value=true;
+      // Realiza la solicitud de login al backend
+      const data: LoginResponse = await usuarios.login(credentiales.value);
+      console.log(data);
 
-      //Ocultar mensaje
-      setTimeout(()=>{
-        mensajevisible.value=false;
-        router.push({name: "listarUser"});
-      }, 1000);
+      // Caso 1: Login exitoso (hay un token válido)
+      if (data.token) {
+        // Guardar el token en localStorage
+        localStorage.setItem('token', data.token);
+        mensajeExito.value = 'Login successfully';
+        mensajevisible.value = true;
 
-    }catch(error){
+        setTimeout(() => {
+          mensajevisible.value = false;
+          router.push({ name: "listarUser" }); // Redirecciona al listado de usuarios
+        }, 1000);
+
+        return; // Termina la ejecución en caso exitoso
+      }
+
+      // Caso 2: Error con mensaje claro del backend
+      if (data.mensajeError) {
+        mensajeError.value = data.mensajeError; // Muestra el mensaje del backend
+        errorModal.value = true; // Activa el modal de error
+        return; // No continúa con la ejecución
+      }
+
+      // Caso 3: Respuesta inesperada del servidor
+      mensajeError.value = "Respuesta inesperada del servidor";
+      errorModal.value = true; // Activa el modal de error
+    } catch (error) {
+      // Manejo de errores inesperados (fallo de conexión, errores del backend, etc.)
       errorModal.value = true;
-      mensajeError.value='Credenciales incorrectas';
-    }
 
+      if (error instanceof Error) {
+        mensajeError.value = error.message; // Usa el mensaje del error capturado
+      } else {
+        mensajeError.value = 'Error al iniciar sesión'; // Mensaje genérico para errores desconocidos
+      }
+    }
   }
 </script>
 <template>
