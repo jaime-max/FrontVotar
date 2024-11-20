@@ -52,6 +52,11 @@ defineComponent({
             <div>Iniciar Sesion</div>
           </a>
         </router-link></li>
+        <li><router-link to="/camiarContrasena/" custom v-slot="{ navigate }">
+          <a href="javascript:void(0);" @click="navigate" role="link">
+            <div>Cambiar contraseña</div>
+          </a>
+        </router-link></li>
         <li><a href="javascript:void(0);" @click="logout">
           <div>Cerrar Sesion</div>
         </a></li>

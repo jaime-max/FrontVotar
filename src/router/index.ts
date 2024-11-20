@@ -5,6 +5,7 @@ import ListarUser from '@/views/usuario/registrarse/ListarUser.vue'
 import RegistrarCandidato from '@/views/candidato/RegistrarCandidato.vue'
 import ListarCandidato from '@/views/candidato/ListarCandidato.vue'
 import GestionVotaciones from '@/views/candidato/GestionVotaciones.vue'
+import CambiarContra from '@/views/usuario/updateContrasena/CambiarContra.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -12,6 +13,12 @@ const router = createRouter({
       path: '/',
       name: 'login',
       component: LoginView
+    },
+    {
+      path: '/camiarContrasena/',
+      name: 'camiarContrasena',
+      component: CambiarContra,
+      meta: { requiresAuth: true }
     },
     {
       path: '/registrar/',
@@ -42,6 +49,7 @@ const router = createRouter({
       component: GestionVotaciones,
       meta: { requiresAuth: true }
     },
+
   ]
 
 })
