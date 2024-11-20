@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import type { registrarCandidato } from '@/views/candidato/interfaces/registrarCandi'
-//import imageCompression from 'browser-image-compression'
+import imageCompression from 'browser-image-compression'
 import candidatos from '@/api/candidatos'
 import { useRouter } from 'vue-router'
 
@@ -104,7 +104,7 @@ const handleFileUpload = async (event: Event) => {
   };
 
   try {
-    //DataCandidatos.value.file = await imageCompression(file, options);
+    DataCandidatos.value.file = await imageCompression(file, options);
   } catch (error) {
     console.error('Error al comprimir la imagen:', error);
     mensajeAdvertencia.value = 'Error al procesar la imagen. Intente con otro archivo.';

@@ -11,6 +11,15 @@ export interface listarCandidato{
   nombre: string;
   apellido: string;
   curso: string;
-  file: File | null;
+  foto: string | null;
   votos: number;
 }
+
+export interface editarCandidatos{
+  id: number;
+  nombre: string;
+  apellido: string;
+  curso: string;
+  file: File | null;
+}
+

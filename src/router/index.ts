@@ -4,6 +4,7 @@ import RegistrarUser from '@/views/usuario/registrarse/RegistrarUser.vue'
 import ListarUser from '@/views/usuario/registrarse/ListarUser.vue'
 import RegistrarCandidato from '@/views/candidato/RegistrarCandidato.vue'
 import ListarCandidato from '@/views/candidato/ListarCandidato.vue'
+import GestionVotaciones from '@/views/candidato/GestionVotaciones.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -20,19 +21,38 @@ const router = createRouter({
     {
       path: '/listarUser/',
       name: 'listarUser',
-      component: ListarUser
+      component: ListarUser,
+      meta: { requiresAuth: true }
     },
     {
       path: '/registrarCandidato/',
       name: 'registrarCandidato',
-      component: RegistrarCandidato
+      component: RegistrarCandidato,
+      meta: { requiresAuth: true }
     },
     {
       path: '/listarCandidato/',
       name: 'listarCandidato',
-      component: ListarCandidato
+      component: ListarCandidato,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/votarCandidato/',
+      name: 'votarCandidato',
+      component: GestionVotaciones,
+      meta: { requiresAuth: true }
     },
   ]
-})
 
+})
+// Lógica de protección de rutas
+router.beforeEach((to, from, next) => {
+  if (to.meta.requiresAuth) {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      return next({ name: 'login' });  // Redirigir a login si no hay token
+    }
+  }
+  next();  // Continuar con la navegación si no hay restricciones
+});
 export default router

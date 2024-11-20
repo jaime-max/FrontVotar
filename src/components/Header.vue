@@ -20,23 +20,33 @@ defineComponent({
   <header class="app-header">
     <nav>
       <ul class="nav-left">
-        <li><router-link to="/" custom v-slot="{ navigate }">
-          <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>Inicio</div>
-          </a>
-        </router-link></li>
-        <li><router-link to="/registrar/" custom v-slot="{ navigate }">
-          <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>Registrar Usuario</div>
-          </a>
-        </router-link></li>
         <li><router-link to="/listarUser/" custom v-slot="{ navigate }">
           <a href="javascript:void(0);" @click="navigate" role="link">
             <div>Lista de Usuarios</div>
           </a>
         </router-link></li>
+        <li><router-link to="/registrarCandidato/" custom v-slot="{ navigate }">
+          <a href="javascript:void(0);" @click="navigate" role="link">
+            <div>Registrar Candidatos</div>
+          </a>
+        </router-link></li>
+        <li><router-link to="/listarCandidato/" custom v-slot="{ navigate }">
+          <a href="javascript:void(0);" @click="navigate" role="link">
+            <div>Listar Candidatos</div>
+          </a>
+        </router-link></li>
+        <li><router-link to="/votarCandidato/" custom v-slot="{ navigate }">
+          <a href="javascript:void(0);" @click="navigate" role="link">
+            <div>Votar por Candidato</div>
+          </a>
+        </router-link></li>
       </ul>
       <ul class="nav-right">
+        <li><router-link to="/registrar/" custom v-slot="{ navigate }">
+          <a href="javascript:void(0);" @click="navigate" role="link">
+            <div>Registrarse</div>
+          </a>
+        </router-link></li>
         <li><router-link to="/" custom v-slot="{ navigate }">
           <a href="javascript:void(0);" @click="navigate" role="link">
             <div>Iniciar Sesion</div>

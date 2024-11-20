@@ -97,7 +97,7 @@ const cerrarModal=()=>{
 
   </div>
 
-  <!-- Modal de confirmación para eliminar clase -->
+  <!-- Modal de confirmación para eliminar un usuario -->
   <div v-if="confirmarDeletUser != null" class="modal">
     <div class="modal-content">
       <span class="close" @click="cerrarModal">&times;</span>
