@@ -2,6 +2,7 @@ import type { updateUser,listarUser ,RegisterUserRequest, } from '@/views/usuari
 import type {LoginRequest, LoginResponse} from '@/views/usuario/login/interfaces/loginRequest'
 import apiUser from '@/api/api-user'
 import type { CambiarContrasenaRequest } from '@/views/usuario/updateContrasena/interface/cambiarContrasena'
+import { AxiosError } from 'axios';
 
 export  default {
   async registerUser(DataUser:RegisterUserRequest){
@@ -15,10 +16,21 @@ export  default {
     const response = await apiUser.get<number>(`/api/usuarios/idPorNombre/${nombre}`);
     return response.data;  // Retorna el valor de data que es un número
   },
-  async login(credentials: LoginRequest):Promise<LoginResponse>{
-    const response = await apiUser.post<LoginResponse>('/api/usuarios/login',credentials)
-    return response.data
+  async login(credentials: LoginRequest): Promise<LoginResponse> {
+    try {
+      const response = await apiUser.post<LoginResponse>('/api/usuarios/login', credentials);
+      return response.data; // Si el login es exitoso, retorna el token o el mensaje.
+    } catch (error) {
+      // Verificamos si el error es de tipo AxiosError
+      if (error instanceof AxiosError && error.response && error.response.data) {
+        return error.response.data; // Devuelve el mensaje de error específico del backend.
+      } else {
+        // Si el error no es un AxiosError, devuelve un mensaje genérico.
+        throw new Error('Error desconocido al intentar iniciar sesión.');
+      }
+    }
   },
+
   async listarUsuario():Promise<listarUser[]>{
     const response = await apiUser.get<listarUser[]>('/api/usuarios');
     return response.data

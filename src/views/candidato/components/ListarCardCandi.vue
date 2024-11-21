@@ -96,12 +96,20 @@ const actualizarCandidato = async () => {
   }
 };
 
-// Función para eliminar un candidato
+// Función para eliminar un candidato y actualizar el total de votos
 const eliminarCandidato = async (id: number) => {
   try {
+    // Eliminar el candidato
     await candidatos.eliminarCandidato(id);
-    ListarCandidatos.value = await candidatos.listarCandidatos(); // Refresca la lista de candidatos
-    confirmarDeleteCandidato.value = null; // Cierra el modal de confirmación
+
+    // Refrescar la lista de candidatos después de la eliminación
+    ListarCandidatos.value = await candidatos.listarCandidatos();
+
+    // Obtener el total de votos actualizado
+    totalVotos.value = await candidatos.Totalvotos();
+
+    // Cerrar el modal de confirmación
+    confirmarDeleteCandidato.value = null;
   } catch (error) {
     console.error('Error en eliminar el candidato', error);
   }

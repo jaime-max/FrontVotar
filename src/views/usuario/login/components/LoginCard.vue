@@ -71,40 +71,41 @@
 
       // Caso 1: Login exitoso (hay un token válido)
       if (data.token) {
-        // Guardar el token en localStorage
         localStorage.setItem('token', data.token);
         mensajeExito.value = 'Login exitoso';
         mensajevisible.value = true;
 
         setTimeout(() => {
           mensajevisible.value = false;
-          router.push({ name: "listarUser" }); // Redirecciona al listado de usuarios
+          router.push({ name: "listarUser" });
         }, 1000);
 
-        return; // Termina la ejecución en caso exitoso
+        return;
       }
 
-      // Caso 2: Error con mensaje claro del backend
+      // Caso 2: Manejo de mensajes de error específicos
       if (data.mensajeError) {
-        mensajeError.value = data.mensajeError; // Muestra el mensaje del backend
-        errorModal.value = true; // Activa el modal de error
-        return; // No continúa con la ejecución
+        mensajeError.value = data.mensajeError; // Mostrar el mensaje de error del backend
+        errorModal.value = true; // Mostrar el modal de error
+        return;
       }
 
-      // Caso 3: Respuesta inesperada del servidor
-      mensajeError.value = "Respuesta inesperada del servidor";
-      errorModal.value = true; // Activa el modal de error
+      // Caso 3: Respuesta inesperada
+      mensajeError.value = "Error inesperado en el servidor";
+      errorModal.value = true;
     } catch (error) {
-      // Manejo de errores inesperados (fallo de conexión, errores del backend, etc.)
+      // Manejo de errores no controlados
       errorModal.value = true;
 
       if (error instanceof Error) {
-        mensajeError.value = error.message; // Usa el mensaje del error capturado
+        mensajeError.value = error.message;
       } else {
-        mensajeError.value = 'Error al iniciar sesión'; // Mensaje genérico para errores desconocidos
+        mensajeError.value = "Error al conectar con el servidor";
       }
     }
   }
+
+
 
 </script>
 <template>

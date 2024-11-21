@@ -15,14 +15,28 @@ apiUser.interceptors.request.use((config) => {
 
 // Manejo de errores
 apiUser.interceptors.response.use(
-  (response) => response,
+  (response) => response, // Devuelve la respuesta sin cambios si todo está bien
   (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem('token'); // Elimina el token
-      console.warn('Usuario no autorizado o token inválido.');
-      // Puedes emitir un evento global para manejar redirecciones
+    const status = error.response?.status;
+    const endpoint = error.config.url;
+
+    // Ignorar errores del endpoint de login
+    if (endpoint?.includes('/api/usuarios/login')) {
+      return Promise.reject(error); // Deja que el componente maneje el error directamente
     }
-    return Promise.reject(error);
+
+    // Caso de no autorización (401) genérico
+    if (status === 401) {
+      console.warn('Usuario no autorizado. Redirigiendo...');
+      localStorage.removeItem('token'); // Elimina el token si no es válido
+    }
+
+    // Caso de error interno del servidor
+    if (status === 500) {
+      console.error('Error interno del servidor. Por favor, intenta más tarde.');
+    }
+
+    return Promise.reject(error); // Rechaza el error para que el frontend lo maneje
   }
 );
 
