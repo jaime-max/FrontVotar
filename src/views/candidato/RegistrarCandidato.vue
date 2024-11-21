@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Footer from '@/components/Footer.vue'
-import Header from '@/components/Header.vue'
+import Header from '@/components/AppHeader.vue'
 import RegisterCardCandi from '@/views/candidato/components/RegisterCardCandi.vue'
 </script>
 

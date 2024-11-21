@@ -23,14 +23,15 @@ export  default {
     const response = await apiUser.get<listarUser[]>('/api/usuarios');
     return response.data
   },
-  async editarUsuario(DataUser:updateUser): Promise<void>{
-    await apiUser.put(`/api/usuarios/${DataUser.id}`,DataUser)
+  async editarUsuario(DataUser: updateUser): Promise<listarUser> {
+    const response = await apiUser.put<listarUser>(`/api/usuarios/${DataUser.id}`, DataUser);
+    return response.data;  // Devuelve el usuario actualizado
   },
+
   async eliminarUsuario(id:number):Promise<void>{
     await apiUser.delete(`/api/usuarios/${id}`)
   },
   async cambiarContrasena(payload: CambiarContrasenaRequest): Promise<void> {
     await apiUser.put('/api/usuarios/cambiarContrasena', payload);
   }
-
 }

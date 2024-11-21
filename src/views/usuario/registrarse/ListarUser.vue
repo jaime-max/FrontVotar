@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Header from '@/components/Header.vue'
+import Header from '@/components/AppHeader.vue'
 import Footer from '@/components/Footer.vue'
 import ListarCard from '@/views/usuario/registrarse/components/ListarCard.vue'
 </script>

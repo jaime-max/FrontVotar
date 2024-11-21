@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 const apiUser = axios.create({
-  baseURL: 'http://localhost:8080',
-})
+  baseURL: 'http://localhost:8080', // Asegúrate de que la URL de tu backend sea correcta
+});
 
 // Interceptor para añadir el token a las solicitudes protegidas
 apiUser.interceptors.request.use((config) => {
@@ -13,17 +13,17 @@ apiUser.interceptors.request.use((config) => {
   return config;
 });
 
-// Interceptor para manejar respuestas y errores
+// Manejo de errores
 apiUser.interceptors.response.use(
-  (response) => response, // Deja pasar las respuestas exitosas
+  (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Token inválido o expirado
-      localStorage.removeItem('token'); // Limpia el token
-      alert('Tu sesión ha expirado. Por favor, inicia sesión nuevamente.');
-      window.location.href = '/login'; // Redirige a la página de login
+      localStorage.removeItem('token'); // Elimina el token
+      console.warn('Usuario no autorizado o token inválido.');
+      // Puedes emitir un evento global para manejar redirecciones
     }
-    return Promise.reject(error); // Rechaza otras respuestas de error
+    return Promise.reject(error);
   }
 );
-export default apiUser
+
+export default apiUser;

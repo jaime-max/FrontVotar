@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BannerCard from '@/views/usuario/login/components/BannerCard.vue'
 import LoginCard from '@/views/usuario/login/components/LoginCard.vue'
-import Header from '@/components/Header.vue'
+import Header from '@/components/AppHeader.vue'
 import Footer from '@/components/Footer.vue'
 
 </script>

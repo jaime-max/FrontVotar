@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineComponent } from 'vue';
 import { useRouter } from 'vue-router'; // Importa el router para redirigir después de cerrar sesión
 
 const router = useRouter(); // Asegúrate de usar useRouter en setup
@@ -11,8 +10,10 @@ function logout() {
   // Redirigir a la página de login
   router.push({ name: 'login' }); // Asegúrate de que el nombre de la ruta sea correcto
 }
-defineComponent({
-  name: 'AppHeader'  // Renombramos el componente a AppHeader
+
+// Exportar la función logout para que otros componentes puedan utilizarla
+defineExpose({
+  logout,
 });
 </script>
 

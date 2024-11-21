@@ -73,7 +73,7 @@
       if (data.token) {
         // Guardar el token en localStorage
         localStorage.setItem('token', data.token);
-        mensajeExito.value = 'Login successfully';
+        mensajeExito.value = 'Login exitoso';
         mensajevisible.value = true;
 
         setTimeout(() => {
@@ -105,6 +105,7 @@
       }
     }
   }
+
 </script>
 <template>
   <section class="login-card">

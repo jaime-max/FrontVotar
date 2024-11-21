@@ -2,9 +2,19 @@
 import { onMounted,ref} from 'vue';
 import type { listarUser, updateUser } from '@/views/usuario/registrarse/interfaces/registerUser'
 import usuarios from '@/api/usuarios'
+import { useRouter } from 'vue-router'
 import IconDelete from '@/views/usuario/registrarse/components/icons/IconDelete.vue'
 import IconEdit from '@/views/usuario/registrarse/components/icons/IconEdit.vue'
+import AppHeader from '@/components/AppHeader.vue'
+const appHeaderRef = ref();
 
+const useLogout = () => {
+  if (appHeaderRef.value) {
+    appHeaderRef.value.logout(); // Llama a la función expuesta
+  } else {
+    console.error('No se pudo acceder a AppHeader.');
+  }
+};
 const iconDimension ={
   width:20,
   height:20,
@@ -13,25 +23,65 @@ const iconDimension ={
 const Listusuarios = ref<listarUser[]>([]);
 const editarUser = ref<updateUser|null>(null);
 const confirmarDeletUser = ref<listarUser| null>(null);
+const router = useRouter(); // Creamos una instancia del router
+const nombreAnterior = ref<string | null>(null);
 
 onMounted(async ()=>{
   Listusuarios.value=await usuarios.listarUsuario();
 })
 
-const selecionarUsuario = async (Listusuarios: listarUser)=>{
-  editarUser.value={id:Listusuarios.id, nombre:Listusuarios.nombre, apellido:Listusuarios.apellido,
-    email:Listusuarios.email, telefono:Listusuarios.telefono}
-}
+const selecionarUsuario = async (usuario: listarUser) => {
+  // Al seleccionar un usuario, guarda su nombre original
+  nombreAnterior.value = usuario.nombre;
 
-const actualizarUsuario = async ()=>{
-  if(editarUser.value){
-    console.log("Datos enviados al server",editarUser.value);
-    await usuarios.editarUsuario(editarUser.value);
-    Listusuarios.value = await usuarios.listarUsuario();
-    editarUser.value=null;
+  // Configura los datos del usuario a editar
+  editarUser.value = {
+    id: usuario.id,
+    nombre: usuario.nombre,
+    apellido: usuario.apellido,
+    email: usuario.email,
+    telefono: usuario.telefono,
+  };
+};
 
+const actualizarUsuario = async (e: Event) => {
+  e.preventDefault(); // Prevenir recarga de página
+
+  if (editarUser.value && nombreAnterior.value !== null) {
+    console.log('Nombre anterior:', nombreAnterior.value);
+
+    try {
+      // Llama al método del servicio para actualizar el usuario
+      const usuarioActualizado = await usuarios.editarUsuario({ ...editarUser.value });
+      console.log('Usuario actualizado desde el backend:', usuarioActualizado);
+
+      // Verifica si el nombre cambió
+      if (usuarioActualizado.nombre === nombreAnterior.value) {
+        console.log('No hubo cambios en el nombre de usuario, redirigiendo a la lista...');
+        await router.push({ name: 'listarUser' }); // Redirige a la lista de usuarios
+      } else {
+        console.log('El nombre del usuario cambió, cerrando sesión...');
+
+
+        // Llama a la función de logout
+        useLogout();
+
+        // Redirige al login con un mensaje
+        await router.push({
+          name: 'login',
+          query: { mensaje: 'Nombre de usuario actualizado. Por favor inicia sesión nuevamente con el nuevo nombre.' },
+        });
+      }
+
+      // Limpia el estado
+      editarUser.value = null;
+      nombreAnterior.value = null; // Limpia la variable de nombre anterior
+    } catch (error) {
+      console.error('Error al actualizar el usuario:', error);
+    }
   }
-}
+};
+
 const eliminar = async (id: number)=>{
   await usuarios.eliminarUsuario(id);
   Listusuarios.value = await usuarios.listarUsuario();
@@ -51,6 +101,7 @@ const cerrarModal=()=>{
 </script>
 
 <template>
+  <AppHeader ref="appHeaderRef" />
   <div class="candi-container">
     <h2>Lista de Usuarios</h2>
     <table class="candi-table">
@@ -91,6 +142,7 @@ const cerrarModal=()=>{
           <input v-model="editarUser.email" class="modal-input" placeholder="Correo Electronico" />
           <input v-model="editarUser.telefono" class="modal-input" placeholder="Telefono" />
           <button @click="actualizarUsuario" class="modal-button"  type="button">Editar Usuario</button>
+
         </form>
       </div>
     </div>
