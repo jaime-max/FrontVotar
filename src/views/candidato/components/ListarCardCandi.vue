@@ -2,12 +2,16 @@
 import { onMounted, ref } from 'vue'
 import type { editarCandidatos, listarCandidato } from '@/views/candidato/interfaces/registrarCandi'
 import candidatos from '@/api/candidatos'
+import votantes from '@/api/votantes'
 import IconDelete from '@/views/usuario/registrarse/components/icons/IconDelete.vue'
 import IconEdit from '@/views/usuario/registrarse/components/icons/IconEdit.vue'
 import imageCompression from 'browser-image-compression'
+
 const totalVotos = ref<number>(0);
 const mostrarVotos = ref(false);
-
+const votacionCompleta = ref<boolean>(false);
+const mensajeError = ref<string>(''); // Variable para almacenar el mensaje de error
+const mostrarErrorVotacion = ref(false); // Bandera para mostrar el error
 const iconDimension = {
   width: 20,
   height: 20,
@@ -23,8 +27,25 @@ onMounted(async () => {
   try {
     ListarCandidatos.value = await candidatos.listarCandidatos();
     console.log("Candidatos:", ListarCandidatos.value);
+
+    // Verificar el estado de votación
+    const response = await votantes.verificarVotacionCompleta();
+    if (response.status === 'success') {
+      votacionCompleta.value = true;
+      mensajeError.value = ''; // Limpia el mensaje de error
+      mostrarErrorVotacion.value = false; // No mostrar error al cargar
+    } else {
+      votacionCompleta.value = false;
+    }
   } catch (error) {
-    console.error("Error al listar candidatos:", error);
+    console.error("Error al verificar votación:", error);
+  }
+
+  // Obtener el total de votos al montar el componente
+  try {
+    totalVotos.value = await candidatos.Totalvotos();
+  } catch (error) {
+    console.error("Error al obtener el total de votos:", error);
   }
 });
 
@@ -126,18 +147,23 @@ const cerrarModal = () => {
   confirmarDeleteCandidato.value = null;
 };
 
-// Función para obtener el total de votos al montar el componente
-onMounted(async () => {
-  try {
-    totalVotos.value = await candidatos.Totalvotos();
-  } catch (error) {
-    console.error("Error al obtener el total de votos:", error);
+// Función para mostrar u ocultar votos
+const toggleMostrarVotos = async () => {
+  if (votacionCompleta.value) {
+    mostrarVotos.value = !mostrarVotos.value;
+  } else {
+    mostrarErrorVotacion.value = true;
+    mensajeError.value = 'El proceso de votación no ha terminado.';
   }
-});
-const toggleMostrarVotos = () => {
-  mostrarVotos.value = !mostrarVotos.value;
+};
+
+// Función para cerrar el modal de error
+const cerrarModalError = () => {
+  mostrarErrorVotacion.value = false;
+  mensajeError.value = '';
 };
 </script>
+
 
 <template>
   <div class="candi-container">
@@ -203,9 +229,19 @@ const toggleMostrarVotos = () => {
     </button>
 
     <!-- Mostrar el total de votos -->
-    <div class="total-votos">
+    <div class="total-votos" >
       <p>Total Votos: {{ totalVotos }}</p>
     </div>
+
+    <!-- Modal pequeño y centrado -->
+    <div v-if="mostrarErrorVotacion && !votacionCompleta" class="small-modal-overlay">
+      <div class="small-modal">
+        <h3 class="modal-title">Atención</h3>
+        <p>{{ mensajeError }}</p>
+        <button class="modal-button" @click="cerrarModalError">Cerrar</button>
+      </div>
+    </div>
+
 
     <!-- Modal de confirmación para eliminar candidato -->
     <div v-if="confirmarDeleteCandidato != null" class="modal">
@@ -230,12 +266,13 @@ const toggleMostrarVotos = () => {
 
 <style scoped>
 .candi-container {
-  max-width: 1500px; /* Aumentar el máximo ancho del contenedor */
-  margin: auto; /* Centra el contenedor */
+  max-width: 1000px; /* Aumentar el máximo ancho del contenedor */
+  margin: 5px auto; /* Centra el contenedor */
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #3175c8;
 }
 h2 {
   text-align: center;
@@ -258,7 +295,7 @@ h2 {
 }
 
 .candi-table th {
-  background-color: #4CAF50;
+  background-color: rgb(14, 112, 211);
   color: white;
 }
 /* Ajustar el ancho de la columna ID */
@@ -315,7 +352,7 @@ tr:nth-child(even) {
   padding: 5px;
   border-radius: 3px;
   background-color: rgb(234, 219, 153);
-  box-shadow: 1px 1px 20px 1px rgba(244, 213, 92, 0.3);
+  box-shadow: 1px 1px 20px 1px rgba(244, 213, 92, 0.91);
   cursor: pointer;
   margin-top: 3px;
   color: #FFFF00;
@@ -346,6 +383,12 @@ tr:nth-child(even) {
   font-size: 28px;
   font-weight: bold;
 }
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
 
 .modal-title {
   margin-bottom: 10px;
@@ -362,7 +405,8 @@ tr:nth-child(even) {
 }
 
 .modal-button {
-  background-color: #4caf50;
+  background-color: rgb(14, 112, 211);
+  box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
   color: white;
   padding: 10px 20px;
   border: none;
@@ -372,9 +416,12 @@ tr:nth-child(even) {
 }
 
 .modal-button:hover {
-  background-color: #45a049;
+  background-color: rgb(9, 37, 237);
+  transform: scale(1.05);
 }
-
+.modal-button:active {
+  transform: scale(1);
+}
 .modal-body {
   padding: 15px;
   text-align: center;
@@ -403,16 +450,20 @@ tr:nth-child(even) {
   display: block;
   margin: 20px auto;
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: rgb(14, 112, 211);
+  box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
 }
-
 .toggle-votes-button:hover {
-  background-color: #45a049;
+  background-color: rgb(9, 37, 237);
+  transform: scale(1.05);
+}
+.toggle-votes-button:active {
+  transform: scale(1);
 }
 
 .total-votos {
@@ -435,6 +486,66 @@ tr:nth-child(even) {
   margin-right: 10px;
   image-rendering: pixelated; /* Probar con 'crisp-edges' o 'pixelated' */
 
+}
+/* Estilos del modal pequeño */
+.small-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Asegúrate de que esté encima del contenido */
+}
+
+.small-modal {
+  background: white;
+  border-radius: 8px;
+  padding: 20px;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombras suaves */
+  animation: fadeIn 0.3s ease-in-out; /* Animación de entrada */
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.modal-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 15px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal-button:hover {
+  background-color: #0056b3; /* Color más oscuro al pasar el mouse */
+}
+.modal-button:active {
+  transform: scale(1);
+}
+
+/* Animación para que el modal aparezca suavemente */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 </style>
 

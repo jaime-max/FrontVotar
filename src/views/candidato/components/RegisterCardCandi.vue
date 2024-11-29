@@ -108,6 +108,10 @@ const handleFileUpload = async (event: Event) => {
   } catch (error) {
     console.error('Error al comprimir la imagen:', error);
     mensajeAdvertencia.value = 'Error al procesar la imagen. Intente con otro archivo.';
+    setTimeout(() => {
+      mensajeAdvertencia.value = null;  // Eliminar el mensaje
+      window.location.reload();  // Recargar la página
+    }, 3000); // 3 segundos
   }
 };
 </script>
@@ -136,7 +140,7 @@ const handleFileUpload = async (event: Event) => {
         type="text"
         placeholder="Curso"
       />
-      <label for="file">Foto:</label>
+
       <input
         type="file"
         @change="handleFileUpload"
@@ -192,13 +196,14 @@ const handleFileUpload = async (event: Event) => {
   padding: 20px;
   width: 80%;
   border-radius: 10px;
-  background-color: rgb(47, 75, 255);
+  background-color: rgb(14, 112, 211);
   color: white;
   box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
   margin-top: 10px;
   cursor: pointer;
 }
 .register-card-form button:hover{
+  background-color: rgb(9, 37, 237);
   transform: scale(1.05);
 }
 .register-card-form button:active {

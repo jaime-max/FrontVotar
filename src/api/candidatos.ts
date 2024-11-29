@@ -1,6 +1,6 @@
 import apiUser from '@/api/api-user'
 import type { editarCandidatos, listarCandidato, registrarCandidato } from '@/views/candidato/interfaces/registrarCandi'
-
+import axios from 'axios'
 
 export default {
   async registerCandidato(data: registrarCandidato) {
@@ -47,16 +47,25 @@ export default {
     return  response.data
   },
 
-  async Votar(id: number): Promise<listarCandidato> {
-    try {
-      const response = await apiUser.post<listarCandidato>(`/api/candidatos/votar/${id}`);
-      return response.data;
-    }catch (error) {
-      console.error('Error al votar por el candidato:', error);
-      throw error;
-    }
 
+  async Votar(id: number, cedula: string): Promise<listarCandidato> {
+    try {
+      const response = await apiUser.post<listarCandidato>(`/api/candidatos/votar/${id}?cedula=${cedula}`);
+      return response.data;
+    } catch (error: unknown) {
+      // Comprobamos si el error es un error de Axios (que tiene la propiedad `response`)
+      if (axios.isAxiosError(error)) {
+        // Si el error es de Axios, manejamos la respuesta del servidor
+        console.error('Error al cargar votantes:', error.response?.data);
+        throw new Error(`Error al cargar los votantes: ${error.response?.data}`);
+      } else {
+        // Si el error no es de Axios, mostramos un error genérico
+        console.error('Error desconocido al cargar votantes:', (error as Error).message);
+        throw new Error(`Error desconocido: ${(error as Error).message}`);
+      }
+    }
   },
+
   async EditarCandi(data: editarCandidatos): Promise<void> {
     const formData = new FormData();
 
@@ -85,5 +94,28 @@ export default {
 
   async eliminarCandidato(id: number): Promise<void> {
     await apiUser.delete(`/api/candidatos/${id}`);
+  },
+  async subirVotantes(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      // Realizar la solicitud POST para cargar el archivo
+      const response = await apiUser.post<string>('/api/candidatos/cargar-votantes', formData);
+
+      // Retornar la respuesta si la solicitud es exitosa
+      return response.data;
+    } catch (error: unknown) {
+      // Comprobamos si el error es un error de Axios (que tiene la propiedad `response`)
+      if (axios.isAxiosError(error)) {
+        // Si el error es de Axios, manejamos la respuesta del servidor
+        console.error('Error al cargar votantes:', error.response?.data);
+        throw new Error(`Error al cargar los votantes: ${error.response?.data}`);
+      } else {
+        // Si el error no es de Axios, mostramos un error genérico
+        console.error('Error desconocido al cargar votantes:', (error as Error).message);
+        throw new Error(`Error desconocido: ${(error as Error).message}`);
+      }
+    }
   }
 };

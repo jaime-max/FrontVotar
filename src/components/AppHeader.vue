@@ -33,10 +33,15 @@ defineExpose({
         </router-link></li>
         <li><router-link to="/listarCandidato/" custom v-slot="{ navigate }">
           <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>Listar Candidatos</div>
+            <div>Lista Candidatos</div>
           </a>
         </router-link></li>
-        <li><router-link to="/votarCandidato/" custom v-slot="{ navigate }">
+        <li><router-link to="/listaVotantes/" custom v-slot="{ navigate }">
+          <a href="javascript:void(0);" @click="navigate" role="link">
+            <div>Lista Votantes</div>
+          </a>
+        </router-link></li>
+        <li><router-link to="/validarVotantes/" custom v-slot="{ navigate }">
           <a href="javascript:void(0);" @click="navigate" role="link">
             <div>Votar por Candidato</div>
           </a>
@@ -65,8 +70,6 @@ defineExpose({
     </nav>
   </header>
 </template>
-
-
 <style scoped>
 .app-header {
   background-color: #333;

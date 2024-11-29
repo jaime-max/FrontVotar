@@ -6,6 +6,8 @@ import RegistrarCandidato from '@/views/candidato/RegistrarCandidato.vue'
 import ListarCandidato from '@/views/candidato/ListarCandidato.vue'
 import GestionVotaciones from '@/views/candidato/GestionVotaciones.vue'
 import CambiarContra from '@/views/usuario/updateContrasena/CambiarContra.vue'
+import ListaVotantes from '@/views/ votantes/ListaVotantes.vue'
+import ValidarVotantes from '@/views/ votantes/ValidarVotantes.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -38,21 +40,34 @@ const router = createRouter({
       meta: { requiresAuth: true }
     },
     {
+      path: '/votarCandidato/',
+      name: 'votarCandidato',
+      component: GestionVotaciones,
+      meta: { requiresAuth: true}
+    },
+    {
       path: '/listarCandidato/',
       name: 'listarCandidato',
       component: ListarCandidato,
       meta: { requiresAuth: true }
     },
     {
-      path: '/votarCandidato/',
-      name: 'votarCandidato',
-      component: GestionVotaciones,
+      path: '/listaVotantes/',
+      name: 'listaVotantes',
+      component: ListaVotantes,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/validarVotantes/',
+      name: 'validarVotantes',
+      component: ValidarVotantes,
       meta: { requiresAuth: true }
     },
 
   ]
 
 })
+
 // Lógica de protección de rutas
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth) {

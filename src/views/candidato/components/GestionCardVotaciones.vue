@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import type { listarCandidato } from '@/views/candidato/interfaces/registrarCandi';
 import candidatos from '@/api/candidatos';
 
@@ -9,6 +10,9 @@ const showModal = ref(false);
 const selectCandidato = ref<listarCandidato | null>(null);
 const successMessage = ref(false);
 const searchQuery = ref('');
+const route = useRoute();
+const router = useRouter();
+const cedula = ref(route.query.cedula || ''); // Obtener la cédula desde la URL
 
 // Computed para filtrar candidatos
 const candidatosFiltrados = computed(() => {
@@ -21,33 +25,6 @@ const candidatosFiltrados = computed(() => {
   );
 });
 
-// Función para votar por un candidato
-const votar = async () => {
-  if (!selectCandidato.value) return;
-  try {
-    // Llama al servicio para votar
-    await candidatos.Votar(selectCandidato.value.id);
-    // Aumenta el conteo de votos localmente
-    selectCandidato.value.votos += 1;
-    successMessage.value = true;
-
-    // Oculta el mensaje de éxito después de 1 segundo
-    setTimeout(() => {
-      successMessage.value = false;
-    }, 1000);
-  } catch (error) {
-    console.error('Error al votar por el candidato:', error);
-  } finally {
-    showModal.value = false; // Cierra el modal
-  }
-};
-
-// Función para abrir el modal con el candidato seleccionado
-const confirmarVoto = (candidato: listarCandidato) => {
-  selectCandidato.value = candidato;
-  showModal.value = true;
-};
-
 // Función para obtener la lista de candidatos desde el servicio
 const obtenerCandidatos = async () => {
   try {
@@ -58,12 +35,47 @@ const obtenerCandidatos = async () => {
   }
 };
 
-// Llamada inicial para obtener los candidatos
+// Función para votar por un candidato
+const votar = async () => {
+  if (!selectCandidato.value) return;
+  try {
+    // Llama al servicio para votar con la cédula
+    await candidatos.Votar(selectCandidato.value.id, cedula.value as string);
+    selectCandidato.value.votos += 1;
+
+    // Muestra el mensaje de éxito
+    successMessage.value = true;
+
+    // Espera un poco antes de redirigir para que el mensaje sea visible
+    setTimeout(async () => {
+      // Redirige a la página de validación de votantes
+      await router.push({ name: 'validarVotantes' });
+      successMessage.value = false;
+    }, 1000); // 1 segundo de retraso para que el mensaje se vea
+
+  } catch (error) {
+    console.error('Error al votar por el candidato:', error);
+  } finally {
+    showModal.value = false;
+  }
+};
+
+// Función para abrir el modal con el candidato seleccionado
+const confirmarVoto = (candidato: listarCandidato) => {
+  selectCandidato.value = candidato;
+  showModal.value = true;
+};
+
+// Lógica para verificar si el votante está validado antes de mostrar la lista de candidatos
 onMounted(() => {
-  obtenerCandidatos();
+  const validado = localStorage.getItem('validado');
+  if (!validado) {
+    router.push('/validarVotantes'); // Redirige a validar votante si no está validado
+  } else {
+    obtenerCandidatos(); // Si está validado, obtener los candidatos
+  }
 });
 </script>
-
 <template>
   <div class="candi-container">
     <h2>Lista de Candidatos</h2>
@@ -117,12 +129,12 @@ onMounted(() => {
 
 <style scoped>
 .candi-container {
-   max-width: 1500px;
-   margin: auto;
-   padding: 20px;
-   background-color: #f9f9f9;
-   border-radius: 8px;
-   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 1500px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 h2 {
   text-align: center;

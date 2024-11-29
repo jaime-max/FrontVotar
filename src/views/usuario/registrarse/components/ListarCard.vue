@@ -135,7 +135,7 @@ const cerrarModal=()=>{
     <div  v-if="editarUser!=null" class="modal">
       <div class="modal-content">
         <span class="close" @click="cerrarModal">&times;</span>
-        <h2 class="modal-title">Editar Clase</h2>
+        <h2 class="modal-title">Editar Usuario</h2>
         <form class="modal-form">
           <input v-model="editarUser.nombre" class="modal-input" placeholder="Nombre" />
           <input v-model="editarUser.apellido" class="modal-input" placeholder="Apellido" />
@@ -169,11 +169,12 @@ const cerrarModal=()=>{
 <style scoped>
 .candi-container {
   max-width: 1000px; /* Máximo ancho del contenedor */
-  margin: auto; /* Centra el contenedor */
+  margin: 5px auto; /* Centra el contenedor */
   padding: 20px; /* Espaciado interno */
   background-color: #f9f9f9; /* Fondo claro */
   border-radius: 8px; /* Bordes redondeados */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  border: 1px solid #3175c8;
 }
 h2 {
   text-align: center; /* Centra el título */
@@ -192,7 +193,7 @@ h2 {
 }
 
 .candi-table th {
-  background-color: #4CAF50; /* Color de fondo de encabezados */
+  background-color: rgb(14, 112, 211); /* Color de fondo de encabezados */
   color: white; /* Color del texto de encabezados */
 }
 
@@ -258,13 +259,15 @@ tr:nth-child(even) {
 .modal {
   display: block; /* Por defecto oculto */
   position: fixed; /* Se mantiene en su lugar en la ventana de visualización */
-  z-index: 1; /* Sitúa el modal encima de otros elementos */
+  z-index: 1000; /* Sitúa el modal encima de otros elementos */
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   overflow: auto; /* Añade desplazamiento si es necesario */
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo oscuro semitransparente */
+  background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+  justify-content: center;
+  align-items: center;
 }
 
 /* Estilos para el contenido del modal */
@@ -272,10 +275,22 @@ tr:nth-child(even) {
   background-color: #fefefe; /* Fondo del modal */
   margin: 15% auto; /* Centra vertical y horizontalmente */
   padding: 20px;
-  border: 1px solid #888;
   width: 50%; /* Ancho del contenido */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombras suaves */
+  animation: fadeIn 0.3s ease-in-out; /* Animación de entrada */
 }
-
+/* Animación para que el modal aparezca suavemente */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 /* Estilos para el botón de cierre */
 .close {
   color: #aaaaaa;
@@ -310,7 +325,8 @@ tr:nth-child(even) {
 }
 /* Estilos para el botón del formulario */
 .modal-button {
-  background-color: #4caf50; /* Color de fondo */
+  background-color: #007bff;
+  box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
   color: white; /* Color del texto */
   padding: 10px 20px; /* Espaciado interior */
   border: none; /* Sin borde */
@@ -320,7 +336,11 @@ tr:nth-child(even) {
 }
 
 .modal-button:hover {
-  background-color: #45a049; /* Cambia el color de fondo al pasar por encima */
+  background-color: #0056b3;
+  transform: scale(1.05); /* Cambia el color de fondo al pasar por encima */
+}
+.modal-button:active {
+  transform: scale(1); /* Cambia el color de fondo al pasar por encima */
 }
 
 /* Estilos para el cuerpo del modal */
