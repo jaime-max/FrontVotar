@@ -18,6 +18,8 @@ const fileInput = ref<File | null>(null);
 const mensaje = ref<string | null>(null);
 const votante = ref<listarVotantes[]>([]);  // Aquí guardamos la lista de votantes
 
+
+
 // Manejar el cambio del archivo
 const onFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
@@ -41,16 +43,16 @@ const cargarVotantes = async () => {
     // Limpiar el mensaje después de 3 segundos y recargar la página
     setTimeout(() => {
       mensaje.value = null;  // Eliminar el mensaje
-      window.location.reload();  // Recargar la página
-    }, 3000); // 3 segundos
+      obtenerVotantes();  // Recargar la página
+    }, 2000); // 3 segundos
   } catch (error) {
     mensaje.value = `❌ ${error instanceof Error ? error.message : 'Error desconocido al cargar votantes.'}`;
 
     // Limpiar el mensaje después de 3 segundos y recargar la página
     setTimeout(() => {
       mensaje.value = null;  // Eliminar el mensaje
-      window.location.reload();  // Recargar la página
-    }, 3000); // 3 segundos
+      obtenerVotantes();  // Recargar la página
+    }, 2000); // 3 segundos
   }
 };
 

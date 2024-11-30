@@ -58,7 +58,8 @@ const actualizarUsuario = async (e: Event) => {
       // Verifica si el nombre cambió
       if (usuarioActualizado.nombre === nombreAnterior.value) {
         console.log('No hubo cambios en el nombre de usuario, redirigiendo a la lista...');
-        await router.push({ name: 'listarUser' }); // Redirige a la lista de usuarios
+        Listusuarios.value = await usuarios.listarUsuario(); // Refresca la lista de candidatos// Redirige a la lista de usuarios
+        editarUser.value = null;
       } else {
         console.log('El nombre del usuario cambió, cerrando sesión...');
 
@@ -136,13 +137,12 @@ const cerrarModal=()=>{
       <div class="modal-content">
         <span class="close" @click="cerrarModal">&times;</span>
         <h2 class="modal-title">Editar Usuario</h2>
-        <form class="modal-form">
-          <input v-model="editarUser.nombre" class="modal-input" placeholder="Nombre" />
-          <input v-model="editarUser.apellido" class="modal-input" placeholder="Apellido" />
-          <input v-model="editarUser.email" class="modal-input" placeholder="Correo Electronico" />
-          <input v-model="editarUser.telefono" class="modal-input" placeholder="Telefono" />
-          <button @click="actualizarUsuario" class="modal-button"  type="button">Editar Usuario</button>
-
+        <form class="modal-form" @submit.prevent="actualizarUsuario">
+          <input v-if="editarUser" v-model="editarUser.nombre" class="modal-input" placeholder="Nombre" />
+          <input v-if="editarUser" v-model="editarUser.apellido" class="modal-input" placeholder="Apellido" />
+          <input v-if="editarUser" v-model="editarUser.email" class="modal-input" placeholder="Correo Electronico" />
+          <input v-if="editarUser" v-model="editarUser.telefono" class="modal-input" placeholder="Telefono" />
+          <button  class="modal-button"  type="submit">Editar Usuario</button>
         </form>
       </div>
     </div>

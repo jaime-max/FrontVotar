@@ -105,8 +105,6 @@
     }
   }
 
-
-
 </script>
 <template>
   <section class="login-card">
