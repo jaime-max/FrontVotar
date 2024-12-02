@@ -359,23 +359,29 @@ tr:nth-child(even) {
 }
 
 .modal {
-  display: block;
-  position: fixed;
-  z-index: 1;
+  display: block; /* Por defecto oculto */
+  position: fixed; /* Se mantiene en su lugar en la ventana de visualización */
+  z-index: 1000; /* Sitúa el modal encima de otros elementos */
   left: 0;
   top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  width: 100vw;
+  height: 100vh;
+  overflow: auto; /* Añade desplazamiento si es necesario */
+  background: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-content {
-  background-color: #fefefe;
-  margin: 15% auto;
+  background-color: #fefefe; /* Fondo del modal */
+  margin: 15% auto; /* Centra vertical y horizontalmente */
   padding: 20px;
-  border: 1px solid #888;
-  width: 50%;
+  width: 50%; /* Ancho del contenido */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombras suaves */
+  animation: fadeIn 0.3s ease-in-out; /* Animación de entrada */
 }
+
 
 .close {
   color: #aaaaaa;
