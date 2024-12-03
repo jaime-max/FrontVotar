@@ -13,27 +13,38 @@ import AppHeader from '@/components/AppHeader.vue'
   </main>
   <Footer/>
 </template>
-
 <style scoped>
-.main{
-  width: 100vw;
-  height: 100vh;
-  background: rgba(235,235,235);
-
-  /*Centrar el card*/
+/* Estilos para el contenedor principal */
+.main {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.card{
-  max-width: 900px;
-  width: 800px;
-  height: 600px;
-  border: 3px solid white;
-  border-radius: 30px;
-  background: linear-gradient(90deg,rgba(255,255,255,1) 0%, rgba(247,255,255,0.3) 100%);
-  padding: 8px;
-  display: flex;
+  height: 100vh;
+  background-image: url('@/assets/img/imagen.png'); /* Cambia el path por el correcto */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  margin: 0;
 }
 
+/* Estilos para el contenedor de la tarjeta de registro */
+.card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 500px;
+  width: 100%;
+  padding: 20px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo blanco con opacidad para destacar el formulario */
+  border-radius: 12px;
+}
+
+/* Ajuste adicional para la responsividad si es necesario */
+@media (max-width: 600px) {
+  .card {
+    padding: 15px;
+  }
+}
 </style>
+

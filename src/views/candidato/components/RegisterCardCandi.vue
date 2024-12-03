@@ -140,7 +140,6 @@ const handleFileUpload = async (event: Event) => {
         type="text"
         placeholder="Curso"
       />
-
       <input
         type="file"
         @change="handleFileUpload"
@@ -162,21 +161,26 @@ const handleFileUpload = async (event: Event) => {
 </template>
 
 <style scoped>
-.register-card-header{
+.register-card-header {
   text-align: center;
   margin-top: 50px;
 }
 
 .register-card {
-  width: 50%;
+  max-width: 900px;
+  width: 800px;
+  height: 600px;
+  border: 3px solid white;
+  border-radius: 30px;
+  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(247,255,255,0.3) 100%);
   padding: 20px;
-  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
-.register-card-form{
+.register-card-form {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -184,14 +188,15 @@ const handleFileUpload = async (event: Event) => {
   margin: 40px 0px;
 }
 
-.register-card-form input{
+.register-card-form input {
   border: none;
   padding: 20px;
   width: 80%;
   border-radius: 10px;
+  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.1);
 }
 
-.register-card-form button{
+.register-card-form button {
   border: none;
   padding: 20px;
   width: 80%;
@@ -201,9 +206,10 @@ const handleFileUpload = async (event: Event) => {
   box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
   margin-top: 10px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.register-card-form button:hover{
+.register-card-form button:hover {
   background-color: rgb(9, 37, 237);
   transform: scale(1.05);
 }
@@ -212,18 +218,13 @@ const handleFileUpload = async (event: Event) => {
   transform: scale(1);
 }
 
-.register-card-form select {
+.register-card-form input[type="file"] {
   border: none;
+  padding: 20px;
+  width: 80%;
   border-radius: 10px;
-  background-color: white;
-  box-shadow: 1px 1px 20px 1px rgba(231, 235, 238, 0.3);
-  margin-top: 10px;
+  background-color: #f7f7f7;
   cursor: pointer;
-  font-size: 16px;
-}
-
-.register-card-form select:hover {
-  background-color: #f0f0f0;
 }
 
 .advert {

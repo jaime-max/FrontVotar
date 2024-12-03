@@ -92,18 +92,30 @@ async function registrarUsuario(){
       <h1>Registrar Usuario</h1>
     </div>
     <div class="register-card-form">
-      <input v-model="DataUser.nombre" @input="validarCampo('nombre')" type="text" placeholder="Nombre">
-      <input v-model="DataUser.apellido" @input="validarCampo('apellido')" type="text" placeholder="Apellido">
-      <input v-model="DataUser.email" @input="validarCampo('email')" type="text" placeholder="Correo">
-      <input v-model="DataUser.telefono" @input="validarCampo('telefono')" type="text" placeholder="telefono">
-      <input v-model="DataUser.password" @input="validarCampo('password')"  type="password" placeholder="password">
-      <!-- Select para elegir si es administrador o usuario normal -->
-      <select v-model="DataUser.esAdministrador">
-        <option :value="true">Administrador</option>
-        <option :value="false">Usuario</option>
-      </select>
+      <div class="input-group">
+        <input v-model="DataUser.nombre" @input="validarCampo('nombre')" type="text" placeholder="Nombre" />
+      </div>
+      <div class="input-group">
+        <input v-model="DataUser.apellido" @input="validarCampo('apellido')" type="text" placeholder="Apellido" />
+      </div>
+      <div class="input-group">
+        <input v-model="DataUser.email" @input="validarCampo('email')" type="email" placeholder="Correo" />
+      </div>
+      <div class="input-group">
+        <input v-model="DataUser.telefono" @input="validarCampo('telefono')" type="tel" placeholder="Teléfono" />
+      </div>
+      <div class="input-group">
+        <input v-model="DataUser.password" @input="validarCampo('password')" type="password" placeholder="Contraseña" />
+      </div>
+      <div class="input-group select-group">
+        <select v-model="DataUser.esAdministrador">
+          <option :value="true">Administrador</option>
+          <option :value="false">Usuario</option>
+        </select>
+      </div>
       <button @click="registrarUsuario" type="button">Registrar</button>
     </div>
+
     <div v-if="mensajeVisible" class="success-message">
       <p>{{ mensajeExito }}</p>
     </div>
@@ -111,76 +123,103 @@ async function registrarUsuario(){
     <div v-if="mensajeAdvertencia" class="advert">
       <p>{{ mensajeAdvertencia }}</p>
     </div>
-
   </section>
 </template>
 
 <style scoped>
-.register-card-header{
-  text-align: center;
-  margin-top: 50px;
+/* Fondo global para centrar el formulario en pantalla */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f3f4f6;
 }
-.register-card{
-  width: 50%;
-  padding: 20px;
-  position: relative;
 
-  /*  Centrar*/
+/* Contenedor del formulario */
+.register-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 30px;
+  background-color: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   justify-content: center;
-}
-.register-card-form{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  margin: 40px 0px;
+  text-align: center;
 }
 
-.register-card-form input{
-  border: none;
-  padding: 20px;
-  width: 80%;
-  border-radius: 10px;
+/* Estilo del encabezado */
+.register-card-header h1 {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
 }
-.register-card-form button{
-  border: none;
-  padding: 20px;
-  width: 80%;
-  border-radius: 10px;
-  background-color: rgb(47, 75, 255);
+
+/* Estilo del formulario */
+.register-card-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Agrupar los inputs */
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Estilo de los inputs */
+.register-card-form input,
+.register-card-form select {
+  padding: 14px;
+  font-size: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+/* Efecto cuando el input tiene focus */
+.register-card-form input:focus,
+.register-card-form select:focus {
+  border-color: #47aaff;
+  box-shadow: 0 0 5px rgba(71, 170, 255, 0.5);
+}
+
+/* Estilo de los select */
+.register-card-form select {
+  background-color: #fafafa;
+}
+
+/* Botón de registro */
+.register-card-form button {
+  padding: 15px;
+  font-size: 16px;
+  background-color: #47aaff;
   color: white;
-  box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
-  margin-top: 10px;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0, 149, 255, 0.3);
+  transition: all 0.3s ease;
 }
-.register-card-form button:hover{
+
+/* Efecto al hacer hover sobre el botón */
+.register-card-form button:hover {
+  background-color: #339bd7;
   transform: scale(1.05);
 }
+
+/* Efecto al hacer click sobre el botón */
 .register-card-form button:active {
   transform: scale(1);
 }
 
-.register-card-form select {
-  border: none;
-  border-radius: 10px;
-  background-color: white;
-  box-shadow: 1px 1px 20px 1px rgba(231, 235, 238, 0.3);
-  margin-top: 10px;
-  cursor: pointer;
-  font-size: 16px;
-}
-.register-card-form select:hover {
-  background-color: #f0f0f0;
-}
-
-
-.advert {
-  color: red;
-  margin-top: 10px;
-  text-align: center;
-}
+/* Estilo para los mensajes de éxito y advertencia */
 .success-message {
   position: fixed;
   top: 20px;
@@ -191,7 +230,17 @@ async function registrarUsuario(){
   padding: 15px;
   border-radius: 5px;
   z-index: 2;
-  text-align: center;
   width: 300px;
+  text-align: center;
+}
+
+.advert {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.select-group select {
+  cursor: pointer;
 }
 </style>
