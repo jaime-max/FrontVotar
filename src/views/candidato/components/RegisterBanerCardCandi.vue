@@ -4,10 +4,9 @@
 
 <template>
   <section class="banner-card">
-    <img src="@/assets/img/login2.jpg" alt="" class="image" />
+    <img src="@/assets/img/register.jpg" alt="" class="image" />
   </section>
 </template>
-
 
 <style scoped>
 .banner-card {

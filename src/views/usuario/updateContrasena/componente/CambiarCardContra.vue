@@ -102,39 +102,33 @@ const cambiarContrasena = async () => {
 
 
 <template>
-  <div>
-    <h2>Cambiar Contraseña</h2>
-    <form @submit.prevent="cambiarContrasena">
-      <div>
-        <label for="contrasenaAntigua">Contraseña Actual:</label>
-        <input
-          type="password"
-          id="contrasenaAntigua"
-          v-model="contrasenaAntigua"
-          placeholder="Ingresa tu contraseña actual"
-        />
-      </div>
-      <div>
-        <label for="nuevaContrasena">Nueva Contraseña:</label>
-        <input
-          type="password"
-          id="nuevaContrasena"
-          v-model="nuevaContrasena"
-          placeholder="Ingresa tu nueva contraseña"
-        />
-      </div>
-      <div>
-        <label for="repetirNuevaContrasena">Repetir Nueva Contraseña:</label>
-        <input
-          type="password"
-          id="repetirNuevaContrasena"
-          v-model="repetirNuevaContrasena"
-          placeholder="Repite tu nueva contraseña"
-        />
-      </div>
-      <button :disabled="enProceso" type="submit">Cambiar Contraseña</button>
-    </form>
-
+  <div class="login-card">
+    <div class="login-card-header">
+      <h1>Cambiar Contraseña</h1>
+    </div>
+    <div class="login-card-form">
+      <input
+        type="password"
+        id="contrasenaAntigua"
+        v-model="contrasenaAntigua"
+        placeholder="Ingresa tu contraseña actual"
+      />
+      <input
+        type="password"
+        id="nuevaContrasena"
+        v-model="nuevaContrasena"
+        placeholder="Ingresa tu nueva contraseña"
+      />
+      <input
+        type="password"
+        id="repetirNuevaContrasena"
+        v-model="repetirNuevaContrasena"
+        placeholder="Repite tu nueva contraseña"
+      />
+      <button :disabled="enProceso" @click="cambiarContrasena" type="button">
+        Cambiar Contraseña
+      </button>
+    </div>
     <div v-if="mensajeExito" class="success-message">
       <p>{{ mensajeExito }}</p>
     </div>
@@ -145,15 +139,79 @@ const cambiarContrasena = async () => {
 </template>
 
 <style scoped>
+.login-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%; /* Ajustar al tamaño del contenedor principal */
+  height: 100%; /* Ajustar al tamaño del contenedor principal */
+  padding: 20px;
+}
+
+.login-card-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.login-card-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.login-card-form input {
+  width: 90%;
+  padding: 15px;
+  border-radius: 10px;
+  border: 2px solid #e0e0e0;
+  outline: none;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.login-card-form input:focus {
+  border-color: #47aaff;
+  box-shadow: 0 0 5px rgba(71, 170, 255, 0.5);
+}
+
+.login-card-form button {
+  width: 90%;
+  padding: 15px;
+  border-radius: 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.login-card-form button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+.login-card-form button:active {
+  transform: scale(1);
+}
+
+.success-message,
+.error-message {
+  width: 90%;
+  text-align: center;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
 .success-message {
   color: #28a745;
-  font-weight: bold;
-  margin-top: 10px;
 }
 
 .error-message {
   color: #dc3545;
-  font-weight: bold;
-  margin-top: 10px;
 }
 </style>
+

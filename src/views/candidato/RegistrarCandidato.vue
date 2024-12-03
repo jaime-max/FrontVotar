@@ -2,6 +2,7 @@
 import Footer from '@/components/Footer.vue'
 import Header from '@/components/AppHeader.vue'
 import RegisterCardCandi from '@/views/candidato/components/RegisterCardCandi.vue'
+import RegisterBanerCardCandi from '@/views/candidato/components/RegisterBanerCardCandi.vue'
 </script>
 
 <template>
@@ -9,6 +10,7 @@ import RegisterCardCandi from '@/views/candidato/components/RegisterCardCandi.vu
   <main class="main">
     <div class="card">
       <RegisterCardCandi/>
+      <RegisterBanerCardCandi/>
     </div>
   </main>
   <Footer/>

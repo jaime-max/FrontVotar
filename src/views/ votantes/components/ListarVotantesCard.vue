@@ -56,6 +56,7 @@ const descartarVotante = async (id: number) => {
   }
 };
 
+
 // Subir votantes
 const cargarVotantes = async () => {
   if (!fileInput.value) {
@@ -116,7 +117,7 @@ onMounted(() => {
   </div>
   <div class="votant-container">
     <h2>Votantes Registrados</h2>
-    <table>
+    <table class="votant-table">
       <thead>
       <tr>
         <th>ID</th>
@@ -135,12 +136,13 @@ onMounted(() => {
         <td>{{ votante.votado ? 'Sí' : 'No' }}</td>
         <td>{{ votante.descartado ? 'Voto Anulado' : 'Voto No Anulado'}}</td>
         <td>
-          <button @click.prevent="descartarVotante(votante.id)">Descartar</button>
+          <button class="button" @click.prevent="descartarVotante(votante.id)">Descartar</button>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
+
 </template>
 
 
@@ -185,20 +187,20 @@ onMounted(() => {
 
 .formulario button {
   display: block;
-  margin: 10px auto;
-  padding: 8px 20px;
-  font-size: 0.9em; /* Reducido tamaño de la fuente */
-  color: #fff;
-  background-color: rgb(14, 112, 211);
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #007bff;
   box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .formulario button:hover {
-  background-color: rgb(9, 37, 237);
+  background-color: #0056b3;
   transform: scale(1.05);
 }
 .formulario button:active {
@@ -231,12 +233,12 @@ onMounted(() => {
 }
 /* Estilo de la Tabla */
 .votant-container {
-  max-width: 1000px; /* Aumentar el máximo ancho del contenedor */
+  max-width: 1000px; /* Máximo ancho del contenedor */
   margin: 5px auto; /* Centra el contenedor */
-  padding: 20px;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px; /* Espaciado interno */
+  background-color: #f9f9f9; /* Fondo claro */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
   border: 1px solid #3175c8;
 }
 h2 {
@@ -245,10 +247,9 @@ h2 {
   margin-bottom: 20px;
 }
 .votant-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  table-layout: auto; /* Fija el tamaño de las columnas */
+  width: 100%; /* Tabla ocupa el 100% del ancho */
+  border-collapse: collapse; /* Combina bordes */
+  margin-bottom: 20px; /* Margen inferior */
 }
 
 .votant-table th, .votant-table td {
@@ -260,6 +261,9 @@ h2 {
 .votant-table th {
   background-color: rgb(14, 112, 211);
   color: white;
+}
+.candi-table tr:hover {
+  background-color: #f1f1f1; /* Color de fondo al pasar el mouse */
 }
 /* Ajustar el ancho de la columna ID */
 .votant-table th:nth-child(1),
@@ -319,5 +323,23 @@ tr:nth-child(even) {
   cursor: pointer;
   margin-top: 3px;
   color: #FFFF00;
+}
+.button{
+  background-color: #f44336;
+  box-shadow: 1px 1px 20px 1px rgb(198, 68, 68);
+  color: white; /* Color del texto */
+  padding: 10px 20px; /* Espaciado interior */
+  border: none; /* Sin borde */
+  cursor: pointer; /* Cursor al pasar por encima */
+  border-radius: 4px; /* Bordes redondeados */
+  margin-top: 20px; /* Espacio superior */
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+.button:hover{
+  background-color: #d32f2f;
+  transform: scale(1.05); /* Cambia el color de fondo al pasar por encima */
+}
+button:active{
+  transform: scale(1); /* Cambia el color de fondo al pasar por encima */
 }
 </style>

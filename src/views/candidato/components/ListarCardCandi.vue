@@ -228,7 +228,7 @@ const cerrarModalError = () => {
           <input v-if="editarCand" v-model="editarCand.apellido" class="modal-input" placeholder="Apellido" />
           <input v-if="editarCand" v-model="editarCand.curso" class="modal-input" placeholder="Curso" />
           <input type="file" class="modal-input" @change="manejarCambioArchivo" />
-          <button type="submit" class="modal-button">Editar Candidato</button>
+          <button type="submit" class="modal-button-edit">Editar Candidato</button>
         </form>
       </div>
     </div>
@@ -353,6 +353,7 @@ tr:nth-child(even) {
   cursor: pointer;
   margin-top: 3px;
   color: #f60202;
+
 }
 
 .table-button button.edit{
@@ -384,7 +385,7 @@ tr:nth-child(even) {
   background-color: #fefefe; /* Fondo del modal */
   margin: 15% auto; /* Centra vertical y horizontalmente */
   padding: 20px;
-  width: 50%; /* Ancho del contenido */
+  width: 30%; /* Ancho del contenido */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombras suaves */
   animation: fadeIn 0.3s ease-in-out; /* Animación de entrada */
@@ -416,22 +417,31 @@ tr:nth-child(even) {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
+  box-sizing: border-box; /* Asegura que el padding no aumente el ancho */
+  border-radius: 8px;
+  outline: none;
+  border: 2px solid #e0e0e0;
+}
+.modal-input:focus{
+  border-color: #47aaff;
+  box-shadow: 0 0 5px rgba(71, 170, 255, 0.5);
 }
 
 .modal-button {
-  background-color: rgb(14, 112, 211);
+  background-color: #007bff;
   box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  margin-top: 20px;
+  color: white; /* Color del texto */
+  padding: 10px 20px; /* Espaciado interior */
+  border: none; /* Sin borde */
+  cursor: pointer; /* Cursor al pasar por encima */
+  border-radius: 4px; /* Bordes redondeados */
+  margin-top: 20px; /* Espacio superior */
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .modal-button:hover {
-  background-color: rgb(9, 37, 237);
-  transform: scale(1.05);
+  background-color: #0056b3;
+  transform: scale(1.05); /* Cambia el color de fondo al pasar por encima */
 }
 .modal-button:active {
   transform: scale(1);
@@ -447,12 +457,13 @@ tr:nth-child(even) {
   color: #555;
 }
 
+/* Estilos para el botón de cancelar */
 .cancel-button {
-  background-color: #f44336;
+  background-color: #f44336; /* Color de fondo para el botón de cancelar */
 }
 
 .cancel-button:hover {
-  background-color: #d32f2f;
+  background-color: #d32f2f; /* Cambia el color de fondo al pasar por encima */
 }
 
 .button-container {
@@ -464,16 +475,17 @@ tr:nth-child(even) {
   display: block;
   margin: 20px auto;
   padding: 10px 20px;
-  background-color: rgb(14, 112, 211);
+  background-color: #007bff;
   box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 .toggle-votes-button:hover {
-  background-color: rgb(9, 37, 237);
+  background-color: #0056b3;
   transform: scale(1.05);
 }
 .toggle-votes-button:active {
@@ -532,7 +544,7 @@ tr:nth-child(even) {
   color: #333;
 }
 
-.modal-button {
+.modal-button-edit {
   background-color: #007bff;
   color: white;
   border: none;
@@ -540,13 +552,14 @@ tr:nth-child(even) {
   padding: 10px 15px;
   font-size: 14px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
-.modal-button:hover {
-  background-color: #0056b3; /* Color más oscuro al pasar el mouse */
+.modal-button-edit:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
 }
-.modal-button:active {
+.modal-button-edit:active {
   transform: scale(1);
 }
 

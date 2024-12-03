@@ -19,89 +19,117 @@ defineExpose({
 
 <template>
   <header class="app-header">
-    <nav>
-      <ul class="nav-left">
-        <li><router-link to="/listarUser/" custom v-slot="{ navigate }">
-          <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>Lista de Usuarios</div>
-          </a>
-        </router-link></li>
-        <li><router-link to="/registrarCandidato/" custom v-slot="{ navigate }">
-          <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>Registrar Candidatos</div>
-          </a>
-        </router-link></li>
-        <li><router-link to="/listarCandidato/" custom v-slot="{ navigate }">
-          <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>Lista Candidatos</div>
-          </a>
-        </router-link></li>
-        <li><router-link to="/listaVotantes/" custom v-slot="{ navigate }">
-          <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>Lista Votantes</div>
-          </a>
-        </router-link></li>
-        <li><router-link to="/validarVotantes/" custom v-slot="{ navigate }">
-          <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>Votar por Candidato</div>
-          </a>
-        </router-link></li>
-      </ul>
-      <ul class="nav-right">
-        <li><router-link to="/registrar/" custom v-slot="{ navigate }">
-          <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>Registrarse</div>
-          </a>
-        </router-link></li>
-        <li><router-link to="/" custom v-slot="{ navigate }">
-          <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>Iniciar Sesion</div>
-          </a>
-        </router-link></li>
-        <li><router-link to="/camiarContrasena/" custom v-slot="{ navigate }">
-          <a href="javascript:void(0);" @click="navigate" role="link">
-            <div>Cambiar contraseña</div>
-          </a>
-        </router-link></li>
-        <li><a href="javascript:void(0);" @click="logout">
-          <div>Cerrar Sesion</div>
-        </a></li>
-      </ul>
-    </nav>
+    <div class="header-container">
+      <div class="logo">
+        <h1>UEDMO</h1>
+      </div>
+      <nav class="navigation">
+        <ul class="nav-links">
+          <li><router-link to="/listarUser/">Lista de Usuarios</router-link></li>
+          <li><router-link to="/registrarCandidato/">Registrar Candidatos</router-link></li>
+          <li><router-link to="/listarCandidato/">Lista Candidatos</router-link></li>
+          <li><router-link to="/listaVotantes/">Lista Votantes</router-link></li>
+          <li><router-link to="/validarVotantes/">Votar por Candidato</router-link></li>
+        </ul>
+        <ul class="nav-right">
+          <li><router-link to="/camiarContrasena/">Cambiar Contraseña</router-link></li>
+          <li><router-link to="/">Iniciar Sesion</router-link></li>
+          <li><a href="javascript:void(0);" @click="logout">Cerrar Sesión</a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 </template>
+
 <style scoped>
 .app-header {
-  background-color: #333;
+  background: linear-gradient(90deg, #264d9f, #1b386f);
   color: white;
   padding: 10px 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
-nav {
+.header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
 }
 
-nav ul {
-  list-style: none;
-  display: flex;
-  padding: 0;
+.logo {
+  flex: 0 0 auto;
+}
+
+.logo h1 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffdd57;
   margin: 0;
 }
 
-.nav-left {
+.navigation {
   display: flex;
-  gap: 80px;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.nav-links, .nav-right {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+}
+
+.nav-links {
+  flex: 2;
 }
 
 .nav-right {
-  display: flex;
-  gap: 80px;
+  justify-content: flex-end;
+  gap: 15px;
 }
 
-nav ul li a {
+.nav-links li, .nav-right li {
+  font-size: 14px;
+}
+
+.nav-links li a, .nav-right li a {
   color: white;
   text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.nav-links li a:hover, .nav-right li a:hover {
+  background-color: #ffdd57;
+  color: #1b386f;
+}
+
+@media (max-width: 768px) {
+  .nav-links, .nav-right {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .nav-right {
+    align-items: flex-end;
+  }
+
+  .nav-links li, .nav-right li {
+    width: 100%;
+  }
+
+  .logo h1 {
+    font-size: 18px;
+  }
 }
 </style>

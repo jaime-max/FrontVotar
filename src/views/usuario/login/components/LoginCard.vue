@@ -183,14 +183,20 @@
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  margin: 40px 0px;
+  margin: 40px 1px;
 }
 
 .login-card-form input{
-  border: none;
   padding: 20px;
   width: 80%;
   border-radius: 10px;
+  border: 2px solid #e0e0e0;
+  outline: none;
+  box-sizing: border-box;
+}
+.login-card-form input:focus{
+  border-color: #47aaff;
+  box-shadow: 0 0 5px rgba(71, 170, 255, 0.5);
 }
 
 .login-card-form button{
@@ -198,13 +204,15 @@
   padding: 20px;
   width: 80%;
   border-radius: 10px;
-  background-color: rgb(245,97,97);
+  background-color: #007bff;
   color: white;
-  box-shadow: 1px 1px 20px 1px rgb(255,0,0,0.301);
+  box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
   margin-top: 10px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 .login-card-form button:hover{
+  background-color: #0056b3;
   transform: scale(1.05);
 }
 .login-card-form button:active {

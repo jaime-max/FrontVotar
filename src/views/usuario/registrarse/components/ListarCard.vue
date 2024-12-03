@@ -5,7 +5,6 @@ import usuarios from '@/api/usuarios'
 import { useRouter } from 'vue-router'
 import IconDelete from '@/views/usuario/registrarse/components/icons/IconDelete.vue'
 import IconEdit from '@/views/usuario/registrarse/components/icons/IconEdit.vue'
-import AppHeader from '@/components/AppHeader.vue'
 const appHeaderRef = ref();
 
 const useLogout = () => {
@@ -102,7 +101,6 @@ const cerrarModal=()=>{
 </script>
 
 <template>
-  <AppHeader ref="appHeaderRef" />
   <div class="candi-container">
     <h2>Lista de Usuarios</h2>
     <table class="candi-table">
@@ -190,6 +188,7 @@ h2 {
   padding: 12px; /* Espaciado interno */
   text-align: left; /* Alineación del texto */
   border-bottom: 1px solid #ddd; /* Línea divisoria */
+  word-wrap: break-word;
 }
 
 .candi-table th {
@@ -275,7 +274,7 @@ tr:nth-child(even) {
   background-color: #fefefe; /* Fondo del modal */
   margin: 15% auto; /* Centra vertical y horizontalmente */
   padding: 20px;
-  width: 50%; /* Ancho del contenido */
+  width: 30%; /* Ancho del contenido */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombras suaves */
   animation: fadeIn 0.3s ease-in-out; /* Animación de entrada */
@@ -322,7 +321,15 @@ tr:nth-child(even) {
   padding: 10px;
   margin: 10px 0;
   box-sizing: border-box; /* Asegura que el padding no aumente el ancho */
+  border-radius: 8px;
+  outline: none;
+  border: 2px solid #e0e0e0;
 }
+.modal-input:focus{
+  border-color: #47aaff;
+  box-shadow: 0 0 5px rgba(71, 170, 255, 0.5);
+}
+
 /* Estilos para el botón del formulario */
 .modal-button {
   background-color: #007bff;
@@ -333,6 +340,7 @@ tr:nth-child(even) {
   cursor: pointer; /* Cursor al pasar por encima */
   border-radius: 4px; /* Bordes redondeados */
   margin-top: 20px; /* Espacio superior */
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
 
 .modal-button:hover {

@@ -162,22 +162,21 @@ const handleFileUpload = async (event: Event) => {
 
 <style scoped>
 .register-card-header {
-  text-align: center;
-  margin-top: 50px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 20px;
 }
 
 .register-card {
-  max-width: 900px;
-  width: 800px;
-  height: 600px;
-  border: 3px solid white;
-  border-radius: 30px;
-  background: linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(247,255,255,0.3) 100%);
+  width: 50%;
   padding: 20px;
+  position: relative;
+
+  /*  Centrar*/
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
 }
 
 .register-card-form {
@@ -185,23 +184,27 @@ const handleFileUpload = async (event: Event) => {
   flex-direction: column;
   align-items: center;
   gap: 20px;
-  margin: 40px 0px;
+  margin: 40px 1px;
 }
 
 .register-card-form input {
-  border: none;
   padding: 20px;
   width: 80%;
   border-radius: 10px;
-  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e0e0e0;
+  outline: none;
+  box-sizing: border-box;
 }
-
+.register-card-form input:focus{
+  border-color: #47aaff;
+  box-shadow: 0 0 5px rgba(71, 170, 255, 0.5);
+}
 .register-card-form button {
   border: none;
   padding: 20px;
   width: 80%;
   border-radius: 10px;
-  background-color: rgb(14, 112, 211);
+  background-color: #007bff;
   color: white;
   box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
   margin-top: 10px;
@@ -210,7 +213,7 @@ const handleFileUpload = async (event: Event) => {
 }
 
 .register-card-form button:hover {
-  background-color: rgb(9, 37, 237);
+  background-color: #0056b3;
   transform: scale(1.05);
 }
 

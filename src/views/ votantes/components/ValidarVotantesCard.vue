@@ -51,30 +51,28 @@ const cerrarModalError = () => {
   <div class="cedula-container">
     <h2>Ingrese su Cédula</h2>
     <form @submit.prevent="ingresar">
-      <input
-        v-model="cedula"
-        type="text"
-        placeholder="Ingrese su cédula"
-        maxlength="10"
-      />
-      <button type="submit">Ingresar a Votar</button>
+        <input
+          v-model="cedula"
+          type="text"
+          placeholder="Ingrese su cédula"
+          maxlength="10"
+        />
+      <button class="button-ingresar" type="submit">Ingresar a Votar</button>
     </form>
-
-    <!-- Modal pequeño y centrado error -->
-    <div v-if="mensajeError" class="small-modal-overlay">
-      <div class="small-modal">
-        <h3 class="modal-title">Atención</h3>
-        <p>{{ mensajeError }}</p><br>
-        <button class="modal-button" @click="cerrarModalError">Cerrar</button>
-      </div>
+  </div>
+  <!-- Modal pequeño y centrado exito-->
+  <div v-if="mensajeExito" class="small-modal-overlay">
+    <div class="small-modal">
+      <h3 class="modal-title">Atención</h3>
+      <p>{{ mensajeExito }}</p>
     </div>
-
-    <!-- Modal pequeño y centrado exito-->
-    <div v-if="mensajeExito" class="small-modal-overlay">
-      <div class="small-modal">
-        <h3 class="modal-title">Atención</h3>
-        <p>{{ mensajeExito }}</p>
-      </div>
+  </div>
+  <!-- Modal pequeño y centrado error -->
+  <div v-if="mensajeError" class="small-modal-overlay">
+    <div class="small-modal">
+      <h3 class="modal-title">Atención</h3>
+      <p>{{ mensajeError }}</p><br>
+      <button class="modal-button" @click="cerrarModalError">Cerrar</button>
     </div>
   </div>
 </template>
@@ -87,22 +85,36 @@ const cerrarModalError = () => {
   margin-top: 50px;
 }
 input {
-  padding: 10px;
-  margin-bottom: 20px;
-  width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  padding: 14px;
+  font-size: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.3s ease;
 }
-button {
+input:focus{
+  border-color: #47aaff;
+  box-shadow: 0 0 5px rgba(71, 170, 255, 0.5);
+}
+.button-ingresar{
+  display: block;
+  margin: 20px auto;
   padding: 10px 20px;
   background-color: #007bff;
+  box-shadow: 1px 1px 20px 1px rgba(0, 149, 255, 0.3);
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
 }
-button:hover {
+.button-ingresar:hover{
   background-color: #0056b3;
+  transform: scale(1.05);
+}
+.button-ingresar:active{
+  transform: scale(1);
 }
 /* Estilos del modal pequeño */
 .small-modal-overlay {
