@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import RegisterCard from '@/views/usuario/registrarse/components/RegisterCard.vue'
-import Header from '@/components/AppHeader.vue'
 import Footer from '@/components/Footer.vue'
+import AppHeader from '@/components/AppHeader.vue'
 </script>
 
 <template>
-  <Header/>
+  <AppHeader/>
   <main class="main">
     <div class="card">
       <RegisterCard/>
@@ -15,7 +15,6 @@ import Footer from '@/components/Footer.vue'
 </template>
 
 <style scoped>
-
 .main{
   width: 100vw;
   height: 100vh;

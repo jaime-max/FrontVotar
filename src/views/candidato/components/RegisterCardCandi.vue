@@ -161,22 +161,21 @@ const handleFileUpload = async (event: Event) => {
   </section>
 </template>
 
-
 <style scoped>
 .register-card-header{
   text-align: center;
   margin-top: 50px;
 }
-.register-card{
+
+.register-card {
   width: 50%;
   padding: 20px;
   position: relative;
-
-  /*  Centrar*/
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 .register-card-form{
   display: flex;
   flex-direction: column;
@@ -191,6 +190,7 @@ const handleFileUpload = async (event: Event) => {
   width: 80%;
   border-radius: 10px;
 }
+
 .register-card-form button{
   border: none;
   padding: 20px;
@@ -202,10 +202,12 @@ const handleFileUpload = async (event: Event) => {
   margin-top: 10px;
   cursor: pointer;
 }
+
 .register-card-form button:hover{
   background-color: rgb(9, 37, 237);
   transform: scale(1.05);
 }
+
 .register-card-form button:active {
   transform: scale(1);
 }
@@ -219,16 +221,17 @@ const handleFileUpload = async (event: Event) => {
   cursor: pointer;
   font-size: 16px;
 }
+
 .register-card-form select:hover {
   background-color: #f0f0f0;
 }
-
 
 .advert {
   color: red;
   margin-top: 10px;
   text-align: center;
 }
+
 .success-message {
   position: fixed;
   top: 20px;

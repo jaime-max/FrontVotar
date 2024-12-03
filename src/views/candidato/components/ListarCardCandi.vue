@@ -37,16 +37,24 @@ onMounted(async () => {
     } else {
       votacionCompleta.value = false;
     }
+    totalVotos.value = await candidatos.Totalvotos();
   } catch (error) {
     console.error("Error al verificar votación:", error);
   }
+});
 
-  // Obtener el total de votos al montar el componente
+// Verificar si todos los votantes no descartados han votado
+const verificarVotacionCompleta = async () => {
   try {
-    totalVotos.value = await candidatos.Totalvotos();
+    const votantesNoDescartados = await votantes.listarVotantesNoDescartados();
+    votacionCompleta.value = votantesNoDescartados.every(v => v.votado);
   } catch (error) {
-    console.error("Error al obtener el total de votos:", error);
+    console.error("Error al verificar votación completa:", error);
   }
+};
+// Llamar a la verificación al montar el componente
+onMounted(async () => {
+  await verificarVotacionCompleta();
 });
 
 // Función para seleccionar un candidato y abrir el modal de edición

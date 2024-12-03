@@ -1,131 +1,148 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { AxiosError } from 'axios';  // Importamos AxiosError
 import candidatos from '@/api/candidatos'
 import votantes from '@/api/votantes'
 import type { listarVotantes } from '@/views/ votantes/interfaces/votantes'
-import IconEdit from '@/views/usuario/registrarse/components/icons/IconEdit.vue'
-import IconDelete from '@/views/usuario/registrarse/components/icons/IconDelete.vue'
-
-const iconDimension ={
-  width: 20,
-  height: 20,
-};
 
 
 
-// Referencias para el archivo y mensajes
+// Referencias
 const fileInput = ref<File | null>(null);
 const mensaje = ref<string | null>(null);
-const votante = ref<listarVotantes[]>([]);  // Aquí guardamos la lista de votantes
+const votantesNoDescartados = ref<listarVotantes[]>([]);
+const votantesRegistrados = ref<listarVotantes[]>([]);
+const descartados = ref<Record<number, boolean>>({}); // Nuevo: Objeto para rastrear votantes descartados
 
-
-
-// Manejar el cambio del archivo
-const onFileChange = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  if (target.files && target.files.length > 0) {
-    fileInput.value = target.files[0];
-    mensaje.value = null; // Limpiar el mensaje al seleccionar un archivo nuevo
+// Obtener la lista de votantes registrados
+const obtenerVotantes = async () => {
+  try {
+    votantesRegistrados.value = await votantes.listaVotantes();
+  } catch (error) {
+    console.error('Error al cargar los votantes:', error);
   }
 };
 
-// Cargar votantes al backend
+// Obtener la lista de votantes no descartados
+const obtenerVotantesNoDescartados = async () => {
+  try {
+    votantesNoDescartados.value = await votantes.listarVotantesNoDescartados();
+  } catch (error) {
+    console.error('Error al obtener votantes no descartados:', error);
+  }
+};
+
+// Descartar votante
+const descartarVotante = async (id: number) => {
+  try {
+    const response = await votantes.descartarVotante(id);
+    mensaje.value = `✅ ${response.message}`;
+    descartados.value[id] = true; // Actualizamos el estado de "descartado"
+    // Limpiar el mensaje después de 3 segundos
+    setTimeout(() => {
+      mensaje.value = null;
+      obtenerVotantes(); // Refrescar la lista de votantes
+    }, 3000);
+  } catch (error: unknown) {  // Usamos 'unknown' en lugar de un tipo más específico
+    if (error instanceof AxiosError) {  // Verificamos si el error es un AxiosError
+      mensaje.value = `❌ ${error.response?.data?.message || 'Error desconocido'}`;
+    } else {
+      mensaje.value = '❌ Error desconocido';
+    }
+    // Limpiar el mensaje después de 3 segundos
+    setTimeout(() => {
+      mensaje.value = null;
+    }, 3000);
+  }
+};
+
+// Subir votantes
 const cargarVotantes = async () => {
   if (!fileInput.value) {
     mensaje.value = '❌ Por favor, selecciona un archivo antes de cargar.';
+    // Limpiar el mensaje después de 3 segundos
+    setTimeout(() => {
+      mensaje.value = null;
+    }, 3000);
     return;
   }
 
   try {
     const response = await candidatos.subirVotantes(fileInput.value);
     mensaje.value = `✅ ${response}`;
-
-    // Limpiar el mensaje después de 3 segundos y recargar la página
     setTimeout(() => {
-      mensaje.value = null;  // Eliminar el mensaje
-      obtenerVotantes();  // Recargar la página
-    }, 2000); // 3 segundos
-  } catch (error) {
-    mensaje.value = `❌ ${error instanceof Error ? error.message : 'Error desconocido al cargar votantes.'}`;
-
-    // Limpiar el mensaje después de 3 segundos y recargar la página
+      mensaje.value = null;
+      obtenerVotantes();
+    }, 3000);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      mensaje.value = `❌ ${error.message}`;
+    } else {
+      mensaje.value = '❌ Error desconocido';
+    }
+    // Limpiar el mensaje después de 3 segundos
     setTimeout(() => {
-      mensaje.value = null;  // Eliminar el mensaje
-      obtenerVotantes();  // Recargar la página
-    }, 2000); // 3 segundos
+      mensaje.value = null;
+    }, 3000);
   }
 };
 
-// Obtener los votantes desde la API
-const obtenerVotantes = async () => {
-  try {
-    // Llamamos a la API para obtener los votantes
-    votante.value = await votantes.listaVotantes(); // Asignamos la respuesta a la variable reactiva
-  } catch (error) {
-    console.error("Error al cargar los votantes:", error);
+// Manejar el cambio de archivo
+const onFileChange = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target.files?.length) {
+    fileInput.value = target.files[0];
+    mensaje.value = null;
   }
 };
 
-// Llamamos a la función de obtener votantes cuando se carga el componente
-obtenerVotantes();
+// Cargar datos al montar el componente
+onMounted(() => {
+  obtenerVotantes();
+  obtenerVotantesNoDescartados();
+});
 </script>
 
 <template>
   <div class="cargar-votantes">
-    <!-- Contenedor para el formulario de carga de votantes -->
-      <h1>Cargar Votantes</h1>
-      <div class="formulario">
-        <label for="file"></label>
-        <input
-          type="file"
-          id="file"
-          ref="fileInput"
-          @change="onFileChange"
-          required
-        />
-        <button @click="cargarVotantes" type="button">Cargar</button>
-      </div>
-
-      <!-- Mensaje de error o éxito -->
-      <div v-if="mensaje" :class="mensaje.startsWith('❌') ? 'mensaje error' : mensaje.startsWith('✅') ? 'mensaje exito' : ''">
-        {{ mensaje }}
-      </div>
+    <h1>Cargar Votantes</h1>
+    <div class="formulario">
+      <input type="file" @change="onFileChange" />
+      <button @click="cargarVotantes">Cargar</button>
+    </div>
+    <div v-if="mensaje" :class="mensaje.startsWith('❌') ? 'mensaje error' : 'mensaje exito'">
+      {{ mensaje }}
+    </div>
   </div>
-
   <div class="votant-container">
     <h2>Votantes Registrados</h2>
-      <table class="votant-table">
-        <thead>
-        <tr>
-          <th>ID</th>
-          <th>Cédula</th>
-          <th>Nombre</th>
-          <th>Votado</th>
-          <th>Acciones</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="votantes in votante" :key="votantes.id">
-          <td>{{ votantes.id }}</td>
-          <td>{{ votantes.cedula }}</td>
-          <td>{{ votantes.nombre }}</td>
-          <td>{{ votantes.votado ? 'Sí' : 'No' }}</td>
-          <td>
-            <div class="table-button">
-              <button @s.prevent="" type="button" class="edit">
-                <IconEdit :width="iconDimension.width" :height="iconDimension.height" />
-              </button>
-              <button @p.prevent="" type="button" class="delete">
-                <IconDelete :width="iconDimension.width" :height="iconDimension.height" />
-              </button>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Cédula</th>
+        <th>Nombre</th>
+        <th>Votado</th>
+        <th>Votos Anulados</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="votante in votantesRegistrados" :key="votante.id">
+        <td>{{ votante.id }}</td>
+        <td>{{ votante.cedula }}</td>
+        <td>{{ votante.nombre }}</td>
+        <td>{{ votante.votado ? 'Sí' : 'No' }}</td>
+        <td>{{ votante.descartado ? 'Voto Anulado' : 'Voto No Anulado'}}</td>
+        <td>
+          <button @click.prevent="descartarVotante(votante.id)">Descartar</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
-
 </template>
+
 
 <style scoped>
 /* Estilo principal */

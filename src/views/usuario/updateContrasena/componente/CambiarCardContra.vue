@@ -10,6 +10,7 @@ const idUsuario = ref<number | null>(null);
 const username = ref<string | null>(null);
 const contrasenaAntigua = ref<string>('');
 const nuevaContrasena = ref<string>('');
+const repetirNuevaContrasena = ref<string>('');
 const mensajeExito = ref<string | null>(null);
 const mensajeError = ref<string | null>(null);
 const enProceso = ref<boolean>(false);
@@ -38,7 +39,7 @@ const obtenerIdUsuario = async () => {
   }
 
   try {
-    // Accede a response.data para obtener el número
+    // Accede a response data para obtener el número
     idUsuario.value = await usuarios.obtenerIdPorNombre(username.value);  // response ya es un número, no un objeto
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
@@ -59,7 +60,7 @@ const cambiarContrasena = async () => {
     return;
   }
 
-  if (!contrasenaAntigua.value || !nuevaContrasena.value) {
+  if (!contrasenaAntigua.value || !nuevaContrasena.value || !repetirNuevaContrasena.value) {
     mensajeError.value = 'Por favor, completa todos los campos.';
     return;
   }
@@ -68,11 +69,16 @@ const cambiarContrasena = async () => {
     mensajeError.value = 'La nueva contraseña debe tener al menos 8 caracteres.';
     return;
   }
+  if (nuevaContrasena.value !== repetirNuevaContrasena.value) {
+    mensajeError.value = 'Las contraseñas nuevas no coinciden.';
+    return;
+  }
 
   const payload: CambiarContrasenaRequest = {
     idUsuario: idUsuario.value,
     contrasenaAntigua: contrasenaAntigua.value,
     nuevaContrasena: nuevaContrasena.value,
+    repetirNuevaContrasena: repetirNuevaContrasena.value,
   };
 
   enProceso.value = true; // Indica que la solicitud está en curso
@@ -83,9 +89,10 @@ const cambiarContrasena = async () => {
     mensajeError.value = null;
     contrasenaAntigua.value = '';
     nuevaContrasena.value = '';
+    repetirNuevaContrasena.value = '';
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    mensajeError.value = 'Error al cambiar la contraseña. Verifica tus datos.';
+    mensajeError.value = '¡Contraseña Antigua incorrecta';
     mensajeExito.value = null;
   } finally {
     enProceso.value = false; // Restablece el estado
@@ -114,6 +121,15 @@ const cambiarContrasena = async () => {
           id="nuevaContrasena"
           v-model="nuevaContrasena"
           placeholder="Ingresa tu nueva contraseña"
+        />
+      </div>
+      <div>
+        <label for="repetirNuevaContrasena">Repetir Nueva Contraseña:</label>
+        <input
+          type="password"
+          id="repetirNuevaContrasena"
+          v-model="repetirNuevaContrasena"
+          placeholder="Repite tu nueva contraseña"
         />
       </div>
       <button :disabled="enProceso" type="submit">Cambiar Contraseña</button>
